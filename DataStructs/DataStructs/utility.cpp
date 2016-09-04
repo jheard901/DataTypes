@@ -12,9 +12,9 @@
 //Converting char* to LPWSTR: http://stackoverflow.com/questions/6858524/convert-char-to-lpwstr
 //Simple way to get DebugOutput: http://stackoverflow.com/questions/9540594/simple-way-to-send-debug-information-to-the-visual-studio-output-window
 //Explanation for DebugOutput: http://stackoverflow.com/questions/1333527/how-do-i-print-to-the-debug-output-window-in-a-win32-app
-void DP(char chs[])
+void DP(const char chs[])
 {
-	if (strlen(chs) < 256) { chs += '\0'; } //append null char to end
+	if (strlen(chs) < 256) { chs += '\0'; } //append null char to end || this not working to get rid of the extra symbols, need to solve that eventually
 	wchar_t wTxt[256]; //max of 256 char limit
 	mbstowcs(wTxt, chs, strlen(chs)); //converts format
 	LPWSTR input = wTxt;

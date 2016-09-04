@@ -2,4 +2,4 @@
 
 
 //DebugPrintString shorthand for windows
-void DP(char chs[]);
+void DP(const char chs[]);
