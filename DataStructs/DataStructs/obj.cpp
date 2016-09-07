@@ -1,24 +1,27 @@
 
 #include "obj.h"
 
-Obj::Obj()
+template <class G>
+Obj<G>::Obj()
 {
-	t1 = 0;
+	//t1 = 0;
 }
 
-Obj::~Obj()
+template <class G>
+Obj<G>::~Obj()
 {
 
 }
 
 //this is used for comparing Obj to each other based off a key (int in this case); ideally, this should be flexible enough to be able to compare any type of data within Obj
-RelationType Obj::ComparedTo(Obj other)
+template <class G>
+RelationType Obj<G>::ComparedTo(Obj other)
 {
-	if (GetIntData() == other.GetIntData())
+	if (GetData() == other.GetData())
 	{
 		return EQUAL;
 	}
-	else if (GetIntData() > other.GetIntData())
+	else if (GetData() > other.GetData())
 	{
 		return GREATER;
 	}
