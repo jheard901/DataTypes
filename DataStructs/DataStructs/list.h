@@ -23,12 +23,14 @@ public:
 	void InsertObject(D object);
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
-	template <> //template specialization for a single method
+	template <>
 	void DeleteObject(Obj object);
+	//void DeleteObject(Obj object);
 	int GetLength();
 	void EmptyList();
 	void ResetCursor();
 	D GetNextObject();
+	void DeleteObject(Obj object);
 };
 
 
