@@ -102,34 +102,6 @@ void LinkedList<D>::DeleteObject(D object)
 	length--;
 }
 
-//I am certain the problem to this is that I am trying to use a templated class as the parameter, which is why I am having trouble
-//might have found solution to this problem here: http://stackoverflow.com/questions/9843671/c-template-function-taking-template-class-as-parameter
-template <>
-inline void LinkedList<class Obj>::DeleteObject(class Obj object)
-{
-	LinkedNode* tempCursor = nullptr;
-	cursor = head;
-	
-	//case for deleting object if its head
-	if (object.ComparedTo(cursor->nData) == EQUAL)
-	{
-		head = cursor->next;
-	}
-	//case for deleting any other object
-	else
-	{
-		while (cursor != nullptr && !(object.ComparedTo((cursor->next)->nData) == EQUAL)) //continue until tempCursor reaches end of list or found the object
-		{
-			cursor = cursor->next;
-		}
-		tempCursor = cursor->next; //the object to be deleted
-		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
-	}
-
-	delete tempCursor;
-	length--;
-}
-
 template <class D>
 int LinkedList<D>::GetLength()
 {
@@ -168,4 +140,13 @@ D LinkedList<D>::GetNextObject()
 	}
 	return cursor->nData;
 }
+
+
+
+
+
+//========================================================//
+// TEMPLATE SPECIALIZATION: Obj
+//========================================================//
+
 

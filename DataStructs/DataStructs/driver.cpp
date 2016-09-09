@@ -12,6 +12,7 @@ LinkedListDriver::~LinkedListDriver()
 
 }
 
+//need to update this since switching to templates for the linkedlist now
 void LinkedListDriver::RunTest(int dataSize)
 {
 	//quick test for basic functionality
