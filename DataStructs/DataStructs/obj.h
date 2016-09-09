@@ -4,14 +4,17 @@
 enum RelationType { EQUAL, GREATER, LESS };
 
 //this is a data class that can be used to represent anything.
+//basis for templates: http://www.cplusplus.com/doc/oldtutorial/templates/
+//how to setup templates: http://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
+template <class G>	//G stands for generic data type
 class Obj
 {
 private:
-	int t1; //integer data type for example
+	G t1; //assume integer data type for example
 public:
 	Obj();
 	~Obj();
 	RelationType ComparedTo(Obj other);
-	int GetIntData() { return t1; }
-	void SetIntData(int val) { t1 = val; }
+	G GetData() { return t1; }
+	void SetData(G val) { t1 = val; }
 };
