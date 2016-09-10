@@ -16,25 +16,25 @@ LinkedListDriver::~LinkedListDriver()
 void LinkedListDriver::RunTest(int dataSize)
 {
 	//quick test for basic functionality
-	LinkedList testList;
+	LinkedList<Obj<int>> testList;
 
 	//inserting elements
 	for (int i = 0; i < dataSize; i++)
 	{
-		Obj nObject;
-		nObject.SetIntData(i);
+		Obj<int> nObject;
+		nObject.SetData(i);
 		testList.InsertObject(nObject);
 	}
 	//read values from list
 	testList.ResetCursor();
 	for (int i = 0; i < dataSize; i++)
 	{
-		std::cout << testList.GetNextObject().GetIntData();
+		std::cout << testList.GetNextObject().GetData();
 	}
 	//delete an object
 	std::cout << "\nList Length = " << testList.GetLength();
-	Obj testObj;
-	testObj.SetIntData(1);
+	Obj<int> testObj;
+	testObj.SetData(1);
 	testList.DeleteObject(testObj);
 	//verify deleted the object
 	std::cout << "\nList Length = " << testList.GetLength();

@@ -1,5 +1,9 @@
 #pragma once
 
+//The purpose of this class is to be a container (similar to the vector class)
+//clearly this is not as powerful as std::vector<T> but in time, we can get there...
+
+
 //used for comparisons
 enum RelationType { EQUAL, GREATER, LESS };
 

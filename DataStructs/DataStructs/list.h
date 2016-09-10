@@ -34,10 +34,11 @@ public:
 	D GetNextObject();
 };
 
-//this is a specialization of LinkedList when created with Obj as the generic type eg "LinkedList<Obj>"
-template <>
-template<class GT> //stands for generic type | allows Obj to be used genrically in this case
-class LinkedList<Obj<GT>> //error-type issues with using GT here; need to fix that
+//this is a specialization of LinkedList when created with the template class Obj
+//Obj as the generic type eg "LinkedList<Obj<GT>>" // GT stands for generic type
+//essentially, LinkedList<Obj<float>> results in Obj<float> when Obj<> is its parameter
+template <class GT>
+class LinkedList<Obj<GT>>
 {
 private:
 	struct LinkedNode
@@ -52,11 +53,12 @@ public:
 	LinkedList();
 	~LinkedList();
 	bool IsFull();
-	void InsertObject(D object);
-	D GetObject(D object, bool &bFound);
-	void DeleteObject(D object);
+	void InsertObject(Obj<GT> object);
+	Obj<GT> GetObject(Obj<GT> object, bool &bFound);
+	void DeleteObject(Obj<GT> object);
 	int GetLength();
 	void EmptyList();
 	void ResetCursor();
-	D GetNextObject();
+	Obj<GT> GetNextObject();
 };
+

@@ -1,0 +1,7 @@
+9-10-16
+@Currently having a problem with error LNK2019 "unresolved external symbol". I know I have
+seen this issue tons of times in coding in the past, but I forgot what causes it to pop up.
+
+$Solve this issue and code should compile; the issue is probably related to the driver attempting
+to use some unsecured logic. I need to do a walk through of the code in its driver to confirm that
+it is logically correct/accurate.
