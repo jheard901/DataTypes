@@ -149,9 +149,9 @@
   <ItemGroup>
     <ClCompile Include="card.cpp" />
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="list.cpp" />
+    <ClCompile Include="_list.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="obj.cpp" />
+    <ClCompile Include="_obj.cpp" />
     <ClCompile Include="stack.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>

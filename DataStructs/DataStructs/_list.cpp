@@ -1,3 +1,4 @@
+/*
 
 #include <new>			//std::bad_alloc
 #include "utility.h"
@@ -213,6 +214,7 @@ D LinkedList<D>::GetNextObject()
 
 
 
+
 //========================================================//
 // TEMPLATE SPECIALIZATION: Obj<int>
 //========================================================//
@@ -221,7 +223,7 @@ D LinkedList<D>::GetNextObject()
 
 
 
-/*
+
 
 template <class Obj<int>>
 LinkedList<Obj<int>>::LinkedList()

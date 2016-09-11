@@ -1,4 +1,9 @@
 
+//probably need to just paste the entire code here into the header file, but preferably
+//I want to keep the stuff separated for clarity's sake
+
+/*
+
 #include "obj.h"
 
 template <class G>
@@ -31,4 +36,5 @@ RelationType Obj<G>::ComparedTo(Obj other)
 	}
 }
 
+*/
 
