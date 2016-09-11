@@ -1,6 +1,7 @@
 #pragma once
 
-//#include "obj.h"
+#include "obj_t.h"
+
 
 //unsorted linked list
 //information on template specialization of a single method: http://stackoverflow.com/questions/1723537/template-specialization-of-a-single-method-from-a-templated-class
@@ -39,42 +40,56 @@ public:
 	void EmptyList();
 	void ResetCursor();
 	D GetNextObject();
+	bool VerifyNextObject();
 };
 
+//explicit specialization declarations (is this partial???)
 
-/*
+template<>
+void LinkedList<Obj<int>>::InsertObject(Obj<int> object);
+
+template<>
+Obj<int> LinkedList<Obj<int>>::GetObject(Obj<int> object, bool & bFound);
+
+template<>
+void LinkedList<Obj<int>>::DeleteObject(Obj<int> object);
+
+
 //Specialization removed temporarily
 
 //this is a specialization of LinkedList when created with the template class Obj
 //Obj as the generic type eg "LinkedList<Obj<GT>>" // GT stands for generic type
-//essentially, LinkedList<Obj<float>> results in Obj<float> when Obj<> is its parameter
-template <class GT>
-class LinkedList<Obj<GT>>
-{
-private:
-	struct LinkedNode
-	{
-		Obj<GT> nData;
-		LinkedNode* next;
-	};
-	LinkedNode* cursor; //iterator
-	LinkedNode* head; //start of list
-	int length;
-public:
-	LinkedList();
-	~LinkedList();
-	bool IsFull();
-	void InsertObject(Obj<GT> object);
-	Obj<GT> GetObject(Obj<GT> object, bool &bFound);
-	void DeleteObject(Obj<GT> object);
-	int GetLength();
-	void EmptyList();
-	void ResetCursor();
-	Obj<GT> GetNextObject();
-};
+//essentially, LinkedList<Obj<float>> results in Obj<float> when Obj<T> is its parameter
+
+//template <>
+//class LinkedList<Obj<int>> //using int as an example atm; later use Card
+//{
+//private:
+//	struct LinkedNode
+//	{
+//		Obj<int> nData;
+//		LinkedNode* next;
+//	};
+//	LinkedNode* cursor; //iterator
+//	LinkedNode* head; //start of list
+//	int length;
+//public:
+//	LinkedList();
+//	~LinkedList();
+//	bool IsFull();
+//	void InsertObject(Obj<int> object);
+//	Obj<int> GetObject(Obj<int> object, bool &bFound);
+//	void DeleteObject(Obj<int> object);
+//	int GetLength();
+//	void EmptyList();
+//	void ResetCursor();
+//	Obj<int> GetNextObject();
+//};
+
+
 
 //#include "_list.hpp"
-*/
+
 
 
 
@@ -119,10 +134,9 @@ bool LinkedList<D>::IsFull()
 	}
 }
 
-//specializations should appear before the generic definition
-//template<class GT>
-//void LinkedList<Obj<GT>>::InsertObject(Obj<GT> object)
-//{
+template <class D>
+void LinkedList<D>::InsertObject(D object)
+{
 //	LinkedNode* temp = new LinkedNode;
 //	temp->nData = object;
 //	temp->next = head;
@@ -134,10 +148,11 @@ bool LinkedList<D>::IsFull()
 //	// 
 //	// valid to use when list has nullptr for head as well
 //
-//}
+}
 
-template <class D>
-void LinkedList<D>::InsertObject(D object)
+//specialization using Obj<int> || ideally we will specialize Obj<Card> for the deck of cards linked list
+template<>
+void LinkedList<Obj<int>>::InsertObject(Obj<int> object)
 {
 	LinkedNode* temp = new LinkedNode;
 	temp->nData = object;
@@ -152,9 +167,16 @@ void LinkedList<D>::InsertObject(D object)
 
 }
 
-//template<class GT>
-//Obj<GT> LinkedList<Obj<GT>>::GetObject(Obj<GT> object, bool & bFound)
-//{
+//need to completely remove the code based around class Obj in this function to use this list generically. Otherwise, I need to tightly couple Obj
+//to this class and pretty much use the following class template declaration structure:
+//template <class GT>
+// template <Obj<GT>>
+//
+//So, I would pretty much only be able to use type Obj as the container to whatever data I would like, instead of being able to use this list
+//generically for simple things like int, float, string, and etc...
+template <class D>
+D LinkedList<D>::GetObject(D object, bool &bFound)
+{
 //	cursor = head;
 //	bFound = false;
 //
@@ -175,10 +197,10 @@ void LinkedList<D>::InsertObject(D object)
 //	}
 //
 //	return cursor->nData;
-//}
+}
 
-template <class D>
-D LinkedList<D>::GetObject(D object, bool &bFound)
+template<>
+Obj<int> LinkedList<Obj<int>>::GetObject(Obj<int> object, bool & bFound)
 {
 	cursor = head;
 	bFound = false;
@@ -202,34 +224,8 @@ D LinkedList<D>::GetObject(D object, bool &bFound)
 	return cursor->nData;
 }
 
-//template<class GT>
-//void LinkedList<Obj<GT>>::DeleteObject(Obj<GT> object)
-//{
-//	LinkedNode* tempCursor = nullptr;
-//	cursor = head;
-//
-//	//case for deleting object if its head
-//	if (object.ComparedTo(cursor->nData) == EQUAL)
-//	{
-//		head = cursor->next;
-//	}
-//	//case for deleting any other object
-//	else
-//	{
-//		while (cursor != nullptr && !(object.ComparedTo((cursor->next)->nData) == EQUAL)) //continue until tempCursor reaches end of list or found the object
-//		{
-//			cursor = cursor->next;
-//		}
-//		tempCursor = cursor->next; //the object to be deleted
-//		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
-//	}
-//
-//	delete tempCursor;
-//	length--;
-//}
-
-template <class D>
-void LinkedList<D>::DeleteObject(D object)
+template<>
+void LinkedList<Obj<int>>::DeleteObject(Obj<int> object)
 {
 	LinkedNode* tempCursor = nullptr;
 	cursor = head;
@@ -252,6 +248,32 @@ void LinkedList<D>::DeleteObject(D object)
 
 	delete tempCursor;
 	length--;
+}
+
+template <class D>
+void LinkedList<D>::DeleteObject(D object)
+{
+//	LinkedNode* tempCursor = nullptr;
+//	cursor = head;
+//
+//	//case for deleting object if its head
+//	if (object.ComparedTo(cursor->nData) == EQUAL)
+//	{
+//		head = cursor->next;
+//	}
+//	//case for deleting any other object
+//	else
+//	{
+//		while (cursor != nullptr && !(object.ComparedTo((cursor->next)->nData) == EQUAL)) //continue until tempCursor reaches end of list or found the object
+//		{
+//			cursor = cursor->next;
+//		}
+//		tempCursor = cursor->next; //the object to be deleted
+//		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
+//	}
+//
+//	delete tempCursor;
+//	length--;
 }
 
 template <class D>
@@ -292,3 +314,36 @@ D LinkedList<D>::GetNextObject()
 	}
 	return cursor->nData;
 }
+
+//true if next object exists
+template<class D>
+bool LinkedList<D>::VerifyNextObject()
+{
+	//if cursor is not assigned, then assign it to head
+	if (cursor == nullptr)
+	{
+		cursor = head;
+		if (cursor == nullptr)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	//if cursor already assigned, then check what it points to next
+	else
+	{
+		if (cursor->next == nullptr)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+}
+
+

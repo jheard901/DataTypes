@@ -1,7 +1,18 @@
 9-10-16
-@Currently having a problem with error LNK2019 "unresolved external symbol". I know I have
+#Currently having a problem with error LNK2019 "unresolved external symbol". I know I have
 seen this issue tons of times in coding in the past, but I forgot what causes it to pop up.
 
 $Solve this issue and code should compile; the issue is probably related to the driver attempting
 to use some unsecured logic. I need to do a walk through of the code in its driver to confirm that
 it is logically correct/accurate.
+
+$(9-11-16)This issue was caused because of including a defined class template in the header of another
+class template. I solved it by including both class templates in a separate driver file. I got rid of
+any specialization code that I had before in list. I am thinking for this list that instead of making
+it use generic types, it should only support using the Obj class which can be filled with generic types.
+From there, we would add in specialization to Obj when it uses specific types such as string, other
+class objects, and etc...
+UPDATE @ 11:30AM: I used info from here: http://stackoverflow.com/questions/1723537/template-specialization-of-a-single-method-from-a-templated-class
+to get specializations to work. I believe they are partial specializations - I still don't fully
+understand how it works, but... it works!
+
