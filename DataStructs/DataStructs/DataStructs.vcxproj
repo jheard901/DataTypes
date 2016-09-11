@@ -157,7 +157,7 @@
     <ClInclude Include="card.h" />
     <ClInclude Include="driver.h" />
     <ClInclude Include="list_t.h" />
-    <ClInclude Include="obj.h" />
+    <ClInclude Include="obj_t.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
