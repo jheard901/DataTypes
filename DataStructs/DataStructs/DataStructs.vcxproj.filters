@@ -30,21 +30,12 @@
     <ClCompile Include="card.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="_list.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="_obj.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utility.h">
@@ -54,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="card.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list_t.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

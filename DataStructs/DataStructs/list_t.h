@@ -1,12 +1,13 @@
 #pragma once
 
-#include "obj.h"
+//#include "obj.h"
 
 //unsorted linked list
 //information on template specialization of a single method: http://stackoverflow.com/questions/1723537/template-specialization-of-a-single-method-from-a-templated-class
 //using class templates as parameters in a class template: http://stackoverflow.com/questions/4189945/templated-class-specialization-where-template-argument-is-a-template
 //less relevant (function templates with template arguments):  http://stackoverflow.com/questions/9843671/c-template-function-taking-template-class-as-parameter
 //overall explanation of template specialization: http://www.cprogramming.com/tutorial/template_specialization.html
+//more on templates from isocpp: https://isocpp.org/wiki/faq/templates#class-templates
 //reason for my error initially is because I tried to make a specialization of a single method, which is not possible.
 //you need to do a specialization of the entire class to make it work the way you intend when a specific generic type is passed to it.
 
@@ -40,6 +41,10 @@ public:
 	D GetNextObject();
 };
 
+
+/*
+//Specialization removed temporarily
+
 //this is a specialization of LinkedList when created with the template class Obj
 //Obj as the generic type eg "LinkedList<Obj<GT>>" // GT stands for generic type
 //essentially, LinkedList<Obj<float>> results in Obj<float> when Obj<> is its parameter
@@ -69,10 +74,13 @@ public:
 };
 
 //#include "_list.hpp"
+*/
 
 
 
-
+//========================================================//
+// TEMPLATE DEFINITIONS
+//========================================================//
 
 
 
@@ -112,21 +120,21 @@ bool LinkedList<D>::IsFull()
 }
 
 //specializations should appear before the generic definition
-template<class GT>
-void LinkedList<Obj<GT>>::InsertObject(Obj<GT> object)
-{
-	LinkedNode* temp = new LinkedNode;
-	temp->nData = object;
-	temp->next = head;
-	head = temp;
-	length++;
-
-	// EX. if A was the head, and B is being inserted, it works like this:
-	// A (head) <- B (temp),  A <- B(head), and etc...
-	// 
-	// valid to use when list has nullptr for head as well
-
-}
+//template<class GT>
+//void LinkedList<Obj<GT>>::InsertObject(Obj<GT> object)
+//{
+//	LinkedNode* temp = new LinkedNode;
+//	temp->nData = object;
+//	temp->next = head;
+//	head = temp;
+//	length++;
+//
+//	// EX. if A was the head, and B is being inserted, it works like this:
+//	// A (head) <- B (temp),  A <- B(head), and etc...
+//	// 
+//	// valid to use when list has nullptr for head as well
+//
+//}
 
 template <class D>
 void LinkedList<D>::InsertObject(D object)
@@ -144,30 +152,30 @@ void LinkedList<D>::InsertObject(D object)
 
 }
 
-template<class GT>
-Obj<GT> LinkedList<Obj<GT>>::GetObject(Obj<GT> object, bool & bFound)
-{
-	cursor = head;
-	bFound = false;
-
-	while (cursor != nullptr && !bFound)
-	{
-		switch (object.ComparedTo(cursor->nData))
-		{
-		case EQUAL:
-			bFound = true;
-			break;
-		case GREATER:
-			cursor = cursor->next;
-			break;
-		case LESS:
-			cursor = cursor->next;
-			break;
-		}
-	}
-
-	return cursor->nData;
-}
+//template<class GT>
+//Obj<GT> LinkedList<Obj<GT>>::GetObject(Obj<GT> object, bool & bFound)
+//{
+//	cursor = head;
+//	bFound = false;
+//
+//	while (cursor != nullptr && !bFound)
+//	{
+//		switch (object.ComparedTo(cursor->nData))
+//		{
+//		case EQUAL:
+//			bFound = true;
+//			break;
+//		case GREATER:
+//			cursor = cursor->next;
+//			break;
+//		case LESS:
+//			cursor = cursor->next;
+//			break;
+//		}
+//	}
+//
+//	return cursor->nData;
+//}
 
 template <class D>
 D LinkedList<D>::GetObject(D object, bool &bFound)
@@ -194,31 +202,31 @@ D LinkedList<D>::GetObject(D object, bool &bFound)
 	return cursor->nData;
 }
 
-template<class GT>
-void LinkedList<Obj<GT>>::DeleteObject(Obj<GT> object)
-{
-	LinkedNode* tempCursor = nullptr;
-	cursor = head;
-
-	//case for deleting object if its head
-	if (object.ComparedTo(cursor->nData) == EQUAL)
-	{
-		head = cursor->next;
-	}
-	//case for deleting any other object
-	else
-	{
-		while (cursor != nullptr && !(object.ComparedTo((cursor->next)->nData) == EQUAL)) //continue until tempCursor reaches end of list or found the object
-		{
-			cursor = cursor->next;
-		}
-		tempCursor = cursor->next; //the object to be deleted
-		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
-	}
-
-	delete tempCursor;
-	length--;
-}
+//template<class GT>
+//void LinkedList<Obj<GT>>::DeleteObject(Obj<GT> object)
+//{
+//	LinkedNode* tempCursor = nullptr;
+//	cursor = head;
+//
+//	//case for deleting object if its head
+//	if (object.ComparedTo(cursor->nData) == EQUAL)
+//	{
+//		head = cursor->next;
+//	}
+//	//case for deleting any other object
+//	else
+//	{
+//		while (cursor != nullptr && !(object.ComparedTo((cursor->next)->nData) == EQUAL)) //continue until tempCursor reaches end of list or found the object
+//		{
+//			cursor = cursor->next;
+//		}
+//		tempCursor = cursor->next; //the object to be deleted
+//		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
+//	}
+//
+//	delete tempCursor;
+//	length--;
+//}
 
 template <class D>
 void LinkedList<D>::DeleteObject(D object)

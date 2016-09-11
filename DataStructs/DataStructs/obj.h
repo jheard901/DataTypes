@@ -10,6 +10,22 @@ enum RelationType { EQUAL, GREATER, LESS };
 //this is a data class that can be used to represent anything.
 //basis for templates: http://www.cplusplus.com/doc/oldtutorial/templates/
 //how to setup templates: http://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
+
+//non-template for simplicity and to accomplish something
+class Obj
+{
+private:
+	int t1; //assume integer data type for example
+public:
+	Obj();
+	~Obj();
+	RelationType ComparedTo(Obj other);
+	int GetData() { return t1; }
+	void SetData(int val) { t1 = val; }
+};
+
+
+/*
 template <class G>	//G stands for generic data type
 class Obj
 {
@@ -58,4 +74,35 @@ RelationType Obj<G>::ComparedTo(Obj other)
 		return LESS;
 	}
 }
+
+*/
+
+
+
+Obj::Obj()
+{
+	//t1 = 0;
+}
+
+Obj::~Obj()
+{
+
+}
+
+RelationType Obj::ComparedTo(Obj other)
+{
+	if (GetData() == other.GetData())
+	{
+		return EQUAL;
+	}
+	else if (GetData() > other.GetData())
+	{
+		return GREATER;
+	}
+	else
+	{
+		return LESS;
+	}
+}
+
 
