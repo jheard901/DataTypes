@@ -8,7 +8,7 @@ private:
 public:
 	LinkedListDriver();
 	~LinkedListDriver();
-	void RunTest(int dataSize);
+	void RunTest(int dataSize, int testType);
 	void InitList();
 };
 

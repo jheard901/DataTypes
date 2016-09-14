@@ -28,8 +28,15 @@ public:
 	void SetData(G val) { t1 = val; }
 };
 
-//#include "_obj.hpp"
-
+//optional to specialize this template's ComparedTo() function to make it work different ways depending on the data type
+//e.g.
+//
+//template <>
+//RelationType Obj<long>::ComparedTo(Obj other);
+//
+//however, this means that if you use classes such as Card, then you need to include it into this class, which is not good
+//since it is adding dependencies between classes. I think its better to encapsulate features such as comparison of a data
+//type within that class itself, and to only use this class as the bridge that connects the two.
 
 
 

@@ -11,7 +11,7 @@ int main(void)
 {
 	LinkedListDriver testDriver;
 	DP("Test driver created.");
-	testDriver.RunTest(4);
+	testDriver.RunTest(4, 0);
 
 	return 0;
 }
