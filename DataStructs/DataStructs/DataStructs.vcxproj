@@ -147,19 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="card.cpp" />
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="list.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="obj.cpp" />
     <ClCompile Include="stack.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="card.h" />
     <ClInclude Include="driver.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="obj.h" />
+    <ClInclude Include="list_t.h" />
+    <ClInclude Include="obj_t.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="utility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DebugNotes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

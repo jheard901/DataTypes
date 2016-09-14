@@ -1,6 +1,5 @@
 #pragma once
 
-#include "list.h"
 
 class LinkedListDriver
 {
@@ -9,7 +8,7 @@ private:
 public:
 	LinkedListDriver();
 	~LinkedListDriver();
-	void RunTest(int dataSize);
+	void RunTest(int dataSize, int testType);
 	void InitList();
 };
 
