@@ -2,6 +2,8 @@
 #include "utility.h"
 #include <Windows.h>	//need to figure out how to set this up for cross platform, so that it uses a specific include based off if the OS is Mac, Linux, or Windows
 #include <cstdlib>		//for mbstowcs
+#include <iostream>
+#undef max	//to undefine the Windows max() macro
 
 //Ultimately, instead of using this Windows based function I want to output debug information
 //to a separate console window aside from the main one used for testing stuff like the driver.
@@ -20,3 +22,33 @@ void DP(const char chs[])
 	LPWSTR input = wTxt;
 	OutputDebugString(input);
 }
+
+int GetInt(int min, int max)
+{
+	bool ok = false;
+	int in;
+
+	while (!ok)
+	{
+		std::cin >> in;
+
+		if (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter a number only: ";
+		}
+		else if (in < min || in > max)
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid input. Please enter a valid number: ";
+		}
+		else
+		{
+			ok = true;
+		}
+	}
+	return in;
+}
+

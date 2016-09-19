@@ -22,7 +22,7 @@ char* Card::GetName()
 
 	//this might be relevant later: http://stackoverflow.com/questions/8356223/assign-a-string-literal-to-a-char
 	// http://stackoverflow.com/questions/10088661/assigning-a-string-of-characters-to-a-char-array
-	//http://stackoverflow.com/questions/5660527/how-do-i-return-a-char-array-from-a-function
+	// http://stackoverflow.com/questions/5660527/how-do-i-return-a-char-array-from-a-function
 
 	//switch based off type to get the first part of card name
 	/*

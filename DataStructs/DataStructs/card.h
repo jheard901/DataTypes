@@ -9,11 +9,11 @@
 //Poker, or other card games.
 
 
-enum Suit { SPADE, HEART, CLUB, DIAMOND };
+enum Suit { SPADE = 0, HEART = 1, CLUB = 2, DIAMOND = 3 };
 
 class Card
 {
-private:
+protected:
 	int faceValue; //the numeric value of the card (ranges from 2-11)
 	int type; //represents the card type ranging from "two" to "ace" (ranges from 0-12)
 	Suit suit; //the suit of the card
@@ -29,3 +29,4 @@ public:
 	Suit GetSuit();
 
 };
+

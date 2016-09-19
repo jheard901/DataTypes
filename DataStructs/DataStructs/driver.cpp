@@ -1,6 +1,7 @@
 
 #include "driver.h"
 #include "list_t.h" //"obj_t.h" is coupled with lists, but can still be used independently
+#include "deck.h"
 #include <iostream>
 
 LinkedListDriver::LinkedListDriver()
@@ -16,6 +17,17 @@ LinkedListDriver::~LinkedListDriver()
 //quick test for basic functionality || use testType to swap between tests
 void LinkedListDriver::RunTest(int dataSize, int testType)
 {
+
+	//////////////////////
+	// SIMPLE DECK TEST 
+	//////////////////////
+	Deck netDeck;
+	netDeck.Generate();
+
+	//////////////////////
+	// SIMPLE LIST TEST 
+	//////////////////////
+
 	//this variable's type is what will be used as the generic type || brief example of typedef in use: http://stackoverflow.com/questions/457577/catching-access-violation-exceptions
 	typedef double DRIVER_TYPE;
 
@@ -31,6 +43,17 @@ void LinkedListDriver::RunTest(int dataSize, int testType)
 			nObject = i;
 			testList.InsertObject(nObject);
 		}
+
+		//testing overloaded methods
+		DRIVER_TYPE testObject;
+		testObject = 999;
+		testList.InsertObject(testObject, 0, true);
+		testList.InsertObject(testObject, 3, false);
+		testList.InsertObject(testObject, 1, true);
+		testList.InsertObject(testObject, 90, false);
+		testObject = 667;
+		testList.InsertObject(testObject, false);
+
 		//read values from list
 		testList.ResetCursor();
 		if (testList.VerifyNextObject())
