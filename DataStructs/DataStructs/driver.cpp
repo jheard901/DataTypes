@@ -58,9 +58,9 @@ void LinkedListDriver::RunTest(int dataSize, int testType)
 		testList.ResetCursor();
 		if (testList.VerifyNextObject())
 		{
-			for (int i = 0; i < dataSize; i++)
+			for (int i = 0; i < testList.GetLength(); i++)
 			{
-				std::cout << testList.GetNextObject(); //we get an access violation error when test list has no nodes initialized | fixed with bool check!	
+				std::cout << testList.GetNextObject() << " "; //we get an access violation error when test list has no nodes initialized | fixed with bool check!	
 			}
 		}
 

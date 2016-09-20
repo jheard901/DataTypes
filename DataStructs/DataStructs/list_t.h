@@ -29,8 +29,7 @@ private:
 	struct LinkedNode
 	{
 		D nData;
-		//Obj<D> nData; //example of what class would look like if I make it exclusively use the Obj container
-		LinkedNode* next;
+		LinkedNode* next = nullptr;	//initialize this so that EmptyList() works properly
 	};
 	LinkedNode* cursor; //iterator
 	LinkedNode* head; //start of list
@@ -43,6 +42,7 @@ public:
 	void InsertObject(D object);	//defaults to add at beginning
 	void InsertObject(D object, bool bInsertAtBeg);	//if false, insert a value at the end of list
 	void InsertObject(D object, int position, bool bInsertBefore);	//adds data before/after a specific position in list: 0 = head, tail = last element.
+	LinkedList* Break(int nElement);	//returns a deep copy of a list starting from nElement to the end of list
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
 	int GetLength();
@@ -246,6 +246,9 @@ void LinkedList<D>::InsertObject(D object, bool bInsertAtBeg)
 template <class D>
 void LinkedList<D>::InsertObject(D object, int position, bool bInsertBefore)
 {
+	//utilize a local iterator
+	LinkedNode* iter = head;
+
 	//confirm if list is initialized
 	if (head == nullptr)
 	{
@@ -255,9 +258,6 @@ void LinkedList<D>::InsertObject(D object, int position, bool bInsertBefore)
 		length++;
 		return;
 	}
-
-	//create a local iterator
-	LinkedNode* iter = new LinkedNode;
 
 	//then check if position is valid
 	if (position >= 0 && position < length)
@@ -358,8 +358,42 @@ void LinkedList<D>::InsertObject(D object, int position, bool bInsertBefore)
 		}
 	}
 
-	//delete the local iterator
-	delete iter;
+}
+
+template<class D>
+LinkedList<D>* LinkedList<D>::Break(int nElement)
+{
+	//list must have more than 1 element
+	if (length < 2)
+	{
+		DP("Invalid list length; it must be at least 2 nodes or more to Break() from.");
+		return 0;
+	}
+
+	//iterate to n element
+	ResetCursor();
+	GetNextObject();
+	for (int i = 0; i < nElement; i++)
+	{
+		GetNextObject();
+	}
+
+	//create another list to store these elements
+	LinkedList<D>* newList = new LinkedList<D>;
+	
+	//create deep copies	//REVIEW THIS CODE
+	LinkedNode* newNode = new LinkedNode(*cursor);
+	newList->head = newNode;
+	newList->cursor = newList->head;
+	while (cursor != nullptr)
+	{
+		cursor = cursor->next;
+		LinkedNode* nNode = new LinkedNode(*cursor);
+		newList->cursor->next = nNode;
+		newList->cursor = nNode;
+	}
+
+	return newList;
 }
 
 //need to specialize non-numeric values such as strings and char
@@ -431,7 +465,9 @@ void LinkedList<D>::EmptyList()
 		cursor = head;
 		head = head->next;
 		delete cursor;
+		cursor = nullptr;	//set that pointer to NULL after delete
 	}
+	tail = nullptr;
 	length = 0;
 }
 
