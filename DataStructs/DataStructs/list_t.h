@@ -34,12 +34,15 @@ private:
 	};
 	LinkedNode* cursor; //iterator
 	LinkedNode* head; //start of list
+	LinkedNode* tail; //end of list
 	int length;
 public:
 	LinkedList();
 	~LinkedList();
 	bool IsFull();
-	void InsertObject(D object);
+	void InsertObject(D object);	//defaults to add at beginning
+	void InsertObject(D object, bool bInsertAtBeg);	//if false, insert a value at the end of list
+	void InsertObject(D object, int position, bool bInsertBefore);	//adds data before/after a specific position in list: 0 = head, tail = last element.
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
 	int GetLength();
@@ -82,26 +85,28 @@ public:
 	bool VerifyNextObject();
 };
 
+/*
 //Specialization removed temporarily
 
 //// syntax example of full class specialization //// untested, but theoretically correct
 
-//template <>
-//class ObjLinkedList<Card>
-//{
-//};
+template <>
+class ObjLinkedList<Card>
+{
+};
 
 //// syntax example of explicit specialization //// tested and works
 
 //declaration
-//template<>
-//void ObjLinkedList<long>::InsertObject(Obj<long> object);
+template<>
+void ObjLinkedList<long>::InsertObject(Obj<long> object);
 
 //definition
-//template<>
-//void ObjLinkedList<long>::InsertObject(Obj<long> object)		//ideally we will specialize Card for the deck of cards linked list
-//{
-//}
+template<>
+void ObjLinkedList<long>::InsertObject(Obj<long> object)		//ideally we will specialize Card for the deck of cards linked list
+{
+}
+*/
 
 
 //========================================================//
@@ -145,6 +150,8 @@ bool LinkedList<D>::IsFull()
 template <class D>
 void LinkedList<D>::InsertObject(D object)
 {
+	/*
+	//old quick way
 	LinkedNode* temp = new LinkedNode;
 	temp->nData = object;
 	temp->next = head;
@@ -155,7 +162,204 @@ void LinkedList<D>::InsertObject(D object)
 	// A(head) <- B(temp),  A <- B(head), A <- B(head) <- C(temp), A <- B <- C(head), and etc...
 	// 
 	// valid to use when list has nullptr for head as well
+	*/
 
+	//if list hasn't been initialized yet, add the first value
+	if (head == nullptr)
+	{
+		LinkedNode* temp = new LinkedNode;
+		temp->nData = object;
+		head = temp;
+		length++;
+	}
+	//if list doesn't have a tail yet, assign it
+	else if (tail == nullptr)
+	{
+		LinkedNode* temp = new LinkedNode;
+		temp->nData = object;
+		head->next = temp;
+		tail = temp;
+		length++;
+	}
+	//else add at object at the end of the list
+	else
+	{
+		LinkedNode* temp = new LinkedNode;
+		temp->nData = object;
+		tail->next = temp;
+		tail = temp;
+		length++;
+	}
+}
+
+template <class D>
+void LinkedList<D>::InsertObject(D object, bool bInsertAtBeg)
+{
+	//insert at beginning
+	if (bInsertAtBeg)
+	{
+		if (head == nullptr)
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			head = temp;
+			length++;
+		}
+		else
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			temp->next = head;
+			head = temp;
+			length++;
+		}
+	}
+	//insert at end
+	else
+	{
+		if (head == nullptr)
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			head = temp;
+			length++;
+		}
+		else if (tail == nullptr)
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			head->next = temp;
+			tail = temp;
+			length++;
+		}
+		else
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			tail->next = temp;
+			tail = temp;
+			length++;
+		}
+	}
+}
+
+template <class D>
+void LinkedList<D>::InsertObject(D object, int position, bool bInsertBefore)
+{
+	//confirm if list is initialized
+	if (head == nullptr)
+	{
+		LinkedNode* temp = new LinkedNode;
+		temp->nData = object;
+		head = temp;
+		length++;
+		return;
+	}
+
+	//create a local iterator
+	LinkedNode* iter = new LinkedNode;
+
+	//then check if position is valid
+	if (position >= 0 && position < length)
+	{
+		//input is okay
+		ResetCursor();
+		GetNextObject();
+		//iterate to position in list
+		for (int i = 0; i < position; i++)
+		{
+			iter = cursor; //iter is the previous node
+			GetNextObject();
+		}
+
+		//check if we insert before position
+		if (bInsertBefore)
+		{
+			//special case for inserting before head
+			if (cursor == head)
+			{
+				LinkedNode* temp = new LinkedNode;
+				temp->nData = object;
+				temp->next = head;
+				head = temp;
+				length++;
+			}
+			else
+			{
+				LinkedNode* temp = new LinkedNode;
+				temp->nData = object;
+				iter->next = temp;		//point the previous node to the new node
+				temp->next = cursor;	//point the new node to the current node
+				length++;
+			}
+		}
+		//insert after position
+		else
+		{
+			//special case if tail not initialized (i.e. only head in list)
+			if (tail == nullptr)
+			{
+				LinkedNode* temp = new LinkedNode;
+				temp->nData = object;
+				cursor->next = temp; //cursor should be on the head
+				tail = temp;
+				length++;
+			}
+			//special case for inserting after tail
+			else if (cursor == tail)
+			{
+				LinkedNode* temp = new LinkedNode;
+				temp->nData = object;
+				cursor->next = temp; //cursor should be on the tail
+				tail = temp;
+				length++;
+			}
+			else
+			{
+				LinkedNode* temp = new LinkedNode;
+				temp->nData = object;
+				temp->next = cursor->next;
+				cursor->next = temp;
+				length++;
+			}
+		}
+	}
+	//invalid position defaults to inserting after the tail
+	else
+	{
+		//invalid input
+		DP("Invalid input entered for position, defaulting to insert after last position");
+		ResetCursor();
+		GetNextObject();
+		//iterate to last position in list
+		for (int i = 0; i < length-1; i++)
+		{
+			iter = cursor; //iter is the previous node
+			GetNextObject();
+		}
+
+		//special case if tail not initialized (i.e. only head in list)
+		if (tail == nullptr)
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			cursor->next = temp; //cursor should be on the head
+			tail = temp;
+			length++;
+		}
+		//special case for inserting after tail
+		else
+		{
+			LinkedNode* temp = new LinkedNode;
+			temp->nData = object;
+			cursor->next = temp; //cursor should be on the tail
+			tail = temp;
+			length++;
+		}
+	}
+
+	//delete the local iterator
+	delete iter;
 }
 
 //need to specialize non-numeric values such as strings and char
