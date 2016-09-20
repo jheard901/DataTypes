@@ -55,7 +55,7 @@ void LinkedListDriver::RunTest(int dataSize, int testType)
 		testList.InsertObject(testObject, false);
 
 		//testing Break() method
-		LinkedList<double>* brokenList = testList.Break(5);
+		LinkedList<double>* brokenList = testList.Break(5, false);
 		//now delete the brokenList
 		brokenList->EmptyList();
 		delete brokenList;

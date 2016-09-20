@@ -42,7 +42,7 @@ public:
 	void InsertObject(D object);	//defaults to add at beginning
 	void InsertObject(D object, bool bInsertAtBeg);	//if false, insert a value at the end of list
 	void InsertObject(D object, int position, bool bInsertBefore);	//adds data before/after a specific position in list: 0 = head, tail = last element.
-	LinkedList* Break(int nElement);	//returns a deep copy of a list starting from nElement to the end of list
+	LinkedList* Break(int nElement, bool bKeepValues);	//returns a deep copy of a list starting from nElement to the end of list | optional to delete or keep values from list
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
 	int GetLength();
@@ -361,8 +361,10 @@ void LinkedList<D>::InsertObject(D object, int position, bool bInsertBefore)
 }
 
 template<class D>
-LinkedList<D>* LinkedList<D>::Break(int nElement)
+LinkedList<D>* LinkedList<D>::Break(int nElement, bool bKeepValues)
 {
+	LinkedNode* iter = nullptr;
+
 	//list must have more than 1 element
 	if (length < 2)
 	{
@@ -375,27 +377,80 @@ LinkedList<D>* LinkedList<D>::Break(int nElement)
 	GetNextObject();
 	for (int i = 0; i < nElement; i++)
 	{
+		iter = cursor;	//iter is on the previous node
 		GetNextObject();
+	}
+
+	//list cannot break from the head
+	if (cursor == head)
+	{
+		DP("Cannot Break() from head of list; use the Duplicate() command instead to make a copy of list.");
+		return 0;
 	}
 
 	//create another list to store these elements
 	LinkedList<D>* newList = new LinkedList<D>;
 	
-	//create deep copies
+	//create deep copies | initialize the newList with a valid head node
 	LinkedNode* newNode = new LinkedNode(*cursor);
 	newList->head = newNode;
 	newList->length++;	//remember to increment newList's length for each added node
 	newList->cursor = newList->head;
-	while (cursor->next != nullptr)
+	//if values WILL NOT BE kept in list
+	if (!bKeepValues)
 	{
-		cursor = cursor->next;
-		LinkedNode* nNode = new LinkedNode(*cursor);
-		newList->cursor->next = nNode;
-		newList->length++;
-		newList->cursor = nNode;
+		//special case for deleting tail
+		if (length == 2)
+		{
+			delete cursor;
+			cursor = nullptr;
+			tail = nullptr;
+			length--;
+		}
+		//set the previous node as the new tail if not keeping values for list Break() is used on
+		else
+		{
+			tail = iter;
+			iter = cursor;	//set iter to the node to delete
+			cursor = cursor->next;	//set cursor to the next node after the deleted one
+			delete iter;
+			tail->next = nullptr;
+			length--;
+		}
+		//we start adding nodes to the newList here
+		while (cursor != nullptr)
+		{
+			//add the soon to delete node to the newList
+			LinkedNode* nNode = new LinkedNode(*cursor);
+			newList->cursor->next = nNode;
+			newList->length++;
+			newList->cursor = nNode;
+			//delete current node, iterate to next one
+			iter = cursor;
+			cursor = cursor->next;
+			delete iter;
+			iter = nullptr;
+			length--;
+		}
 	}
-	//set the tail for newList
-	newList->tail = newList->cursor;
+	//if values WILL BE kept in list
+	else
+	{
+		while (cursor->next != nullptr)
+		{
+			cursor = cursor->next;
+			LinkedNode* nNode = new LinkedNode(*cursor);
+			newList->cursor->next = nNode;
+			newList->length++;
+			newList->cursor = nNode;
+		}
+	}
+	
+	//set the tail for newList | assuming it at least has 2 nodes
+	if (newList->length > 1)
+	{
+		newList->tail = newList->cursor;
+	}
 
 	return newList;
 }
