@@ -381,17 +381,21 @@ LinkedList<D>* LinkedList<D>::Break(int nElement)
 	//create another list to store these elements
 	LinkedList<D>* newList = new LinkedList<D>;
 	
-	//create deep copies	//REVIEW THIS CODE
+	//create deep copies
 	LinkedNode* newNode = new LinkedNode(*cursor);
 	newList->head = newNode;
+	newList->length++;	//remember to increment newList's length for each added node
 	newList->cursor = newList->head;
-	while (cursor != nullptr)
+	while (cursor->next != nullptr)
 	{
 		cursor = cursor->next;
 		LinkedNode* nNode = new LinkedNode(*cursor);
 		newList->cursor->next = nNode;
+		newList->length++;
 		newList->cursor = nNode;
 	}
+	//set the tail for newList
+	newList->tail = newList->cursor;
 
 	return newList;
 }
