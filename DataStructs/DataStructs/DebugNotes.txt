@@ -1,3 +1,42 @@
+List Goals:
+
+    Generic datatyping
+    Add data:
+        Add at beginning
+        Add at the end
+        Add at a specific position
+        Add another list's data at beginning/end/position
+    Remove data:
+        Remove from beginning
+        Remove from the end
+        Remove from a specific position
+        Remove a particular value
+        Remove all instances of a particular value
+        Remove another list's data
+    Clear entire list ("make empty")
+    Replace:
+        at position
+        value
+        all instances of a value
+    Find a value:
+        Determine if the list contains a value
+        Where is a value in the list (first occurrence)
+        Where is a value in the list (first occurrence after a position)
+        Find all instances of value and return their positions
+    Iterate over the list
+    Return nth value in the list
+    Determine the size of the list
+    Determine if two lists are equal (same values, same order)
+    Convert list to textual format
+    Create a linked list:
+        Create empty list
+        Create list from a single value
+        Create list as a copy of another list
+        Create list from an array of values
+    Build a list as the reverse of the source list
+
+
+Addendum (Notes?):
 9-10-16
 #Currently having a problem with error LNK2019 "unresolved external symbol". I know I have
 seen this issue tons of times in coding in the past, but I forgot what causes it to pop up.
@@ -15,4 +54,7 @@ class objects, and etc...
 UPDATE @ 11:30AM: I used info from here: http://stackoverflow.com/questions/1723537/template-specialization-of-a-single-method-from-a-templated-class
 to get specializations to work. I believe they are partial specializations - I still don't fully
 understand how it works, but... it works!
+
+
+
 
