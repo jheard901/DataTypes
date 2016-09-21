@@ -43,12 +43,14 @@ public:
 	void InsertObject(D object, bool bInsertAtBeg);	//if false, insert a value at the end of list
 	void InsertObject(D object, int position, bool bInsertBefore);	//adds data before/after a specific position in list: 0 = head, tail = last element.
 	LinkedList* Break(int nElement, bool bKeepValues);	//returns a deep copy of a list starting from nElement to the end of list | optional to delete or keep values from list
+	void AddList(LinkedList* nList);
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
 	LinkedNode* IterateTo(int nPos);	//iterates through list starting from head to specified position
 	int GetLength();
 	void EmptyList();
 	void ResetCursor();
+	LinkedNode* GetCursor();
 	D GetNextObject();
 	bool VerifyNextObject();
 };
@@ -456,6 +458,39 @@ LinkedList<D>* LinkedList<D>::Break(int nElement, bool bKeepValues)
 	return newList;
 }
 
+//for the moment, this only adds a copy of a list into an empty list | nothing about this is type safe yet
+template <class D>
+void LinkedList<D>::AddList(LinkedList* nList)
+{
+	//utilize a local iterator
+	LinkedNode* iter = head;
+
+	//confirm if list is initialized
+	if (head == nullptr)
+	{
+		nList->ResetCursor();
+		nList->GetNextObject();
+		LinkedNode* newNode = new LinkedNode(*(nList->cursor));
+		head = newNode;
+		cursor = head;
+
+		while (nList->cursor->next != nullptr)
+		{
+			nList->cursor = nList->cursor->next;
+			LinkedNode* nNode = new LinkedNode(*(nList->cursor));
+			cursor->next = nNode;
+			length++;
+			cursor = nNode;
+		}
+	}
+
+	//set the tail | assuming it has at least 2 nodes
+	if (length > 1)
+	{
+		tail = cursor;
+	}
+}
+
 //need to specialize non-numeric values such as strings and char
 template <class D>
 D LinkedList<D>::GetObject(D object, bool &bFound)
@@ -550,6 +585,12 @@ template <class D>
 void LinkedList<D>::ResetCursor()
 {
 	cursor = nullptr;
+}
+
+template<class D>
+typename LinkedList<D>::LinkedNode* LinkedList<D>::GetCursor()
+{
+	return cursor;
 }
 
 template <class D>

@@ -23,6 +23,7 @@ void LinkedListDriver::RunTest(int dataSize, int testType)
 	//////////////////////
 	Deck netDeck;
 	netDeck.Generate();
+	netDeck.Shuffle(14);
 
 	//////////////////////
 	// SIMPLE LIST TEST 
