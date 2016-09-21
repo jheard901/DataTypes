@@ -45,6 +45,7 @@ public:
 	LinkedList* Break(int nElement, bool bKeepValues);	//returns a deep copy of a list starting from nElement to the end of list | optional to delete or keep values from list
 	D GetObject(D object, bool &bFound);
 	void DeleteObject(D object);
+	LinkedNode* IterateTo(int nPos);	//iterates through list starting from head to specified position
 	int GetLength();
 	void EmptyList();
 	void ResetCursor();
@@ -151,7 +152,7 @@ template <class D>
 void LinkedList<D>::InsertObject(D object)
 {
 	/*
-	//old quick way
+	//old quick way //this logic can be used for reversing a singly linked list (make head the reverseList's tail, then once finished the last element will be the reverseList's head)
 	LinkedNode* temp = new LinkedNode;
 	temp->nData = object;
 	temp->next = head;
@@ -516,6 +517,20 @@ int LinkedList<D>::GetLength()
 	return length;
 }
 
+//typename required for returning a struct/typedef: http://stackoverflow.com/questions/16131838/error-dependent-name-is-not-a-type-when-use-typedef-type-in-class-as-return
+template<class D>
+typename LinkedList<D>::LinkedNode* LinkedList<D>::IterateTo(int nPos)
+{
+	//note this isn't type-safe. Iterate only to a position you know is valid!
+	ResetCursor();
+	GetNextObject();
+	for (int x = 0; x < nPos; x++)
+	{
+		GetNextObject();
+	}
+	return cursor;
+}
+
 template <class D>
 void LinkedList<D>::EmptyList()
 {
@@ -583,6 +598,8 @@ bool LinkedList<D>::VerifyNextObject()
 		}
 	}
 }
+
+
 
 
 
