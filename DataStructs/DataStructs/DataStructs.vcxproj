@@ -151,6 +151,7 @@
     <ClCompile Include="deck.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
     <ClCompile Include="stack.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="deck.h" />
     <ClInclude Include="driver.h" />
     <ClInclude Include="list_t.h" />
+    <ClInclude Include="math.h" />
     <ClInclude Include="obj_t.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="utility.h" />

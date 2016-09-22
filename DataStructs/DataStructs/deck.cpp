@@ -1,8 +1,8 @@
 
 #include "deck.h"
 #include "list_t.h"
-#include <stdlib.h> //srand(), rand()
-#include <time.h> //time()
+#include "math.h"
+#include <vector>
 
 Deck::Deck()
 {
@@ -39,19 +39,49 @@ void Deck::Generate(int deckSize, bool bRandomCards)
 void Deck::Shuffle(int nShuffles)
 {
 	//seed random number generator with a unique number
-	srand(unsigned(time(NULL)));
+	SeedGenerator();
 
 	//stores merged values, and replaces cardList with them || cleared after each shuffle
 	LinkedList<Card>* tempList = new LinkedList<Card>; 
 
 	for (int i = 0; i < nShuffles; i++)
 	{
-		////// SPLIT DECK INTO SMALLER DECKS THEN RANDOMLY MERGE THEM BACK TOGETEHR //////
+		////// SPLIT DECK INTO SMALLER DECKS THEN RANDOMLY MERGE THEM BACK TOGETEHR //////	This can be its own function
 
-		//for this, split deck into 4-6 smaller pieces, then randomly decide which piece to merge back into main deck until all are back in
+		//split deck into 4, 5, or 6 pieces
+		const int MIN_SPLITS = 3;
+		const int MAX_SPLITS = 5;
+		int nDeckSplits = GetRandomInt(MIN_SPLITS, MAX_SPLITS);
+		int numDecks = nDeckSplits + 1;
+		int splitLength = cardList->GetLength() / numDecks;
+		//stores each split deck	//temporarily using vector here, until I update class Obj to fulfill a similar role
+		std::vector<LinkedList<Card>*> splitDeckList;
+		for (int i = 0; i < nDeckSplits; i++)
+		{
+			splitDeckList.push_back(cardList->Break(cardList->GetLength() - splitLength, false));
+		}
+		//now we need to put every deck being used into a single list
+		LinkedList<LinkedList<Card>*> listOfLists;
+		listOfLists.InsertObject(cardList);
+		for (int x = 0; x < nDeckSplits; x++)
+		{
+			listOfLists.InsertObject(splitDeckList[x]);
+		}
+		while (listOfLists.GetLength() > 0)
+		{
+			LinkedList<Card>* refList = (listOfLists.IterateTo(GetRandomInt(0, listOfLists.GetLength()))->nData);
+			tempList->AddList(refList);
+			listOfLists.DeleteObject(refList);
+		}
 
+		//clean the cardList then add the tempList to it
+		cardList->EmptyList();
+		cardList->AddList(tempList);
 
-		////// START OF SHUFFLING CARDS TOGETHER //////
+		//cleanup temp list for reuse
+		tempList->EmptyList();
+
+		////// START OF SHUFFLING CARDS TOGETHER //////	This can also be its own function
 
 		//break the cardList at a random point near the middle || temporarily just use a default for midpoint
 		int midpoint = cardList->GetLength() / 2;

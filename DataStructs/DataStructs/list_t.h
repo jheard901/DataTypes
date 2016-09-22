@@ -458,7 +458,7 @@ LinkedList<D>* LinkedList<D>::Break(int nElement, bool bKeepValues)
 	return newList;
 }
 
-//for the moment, this only adds a copy of a list into an empty list | nothing about this is type safe yet
+//for the moment, this only adds a list at the end of a list | nothing about this is type safe yet
 template <class D>
 void LinkedList<D>::AddList(LinkedList* nList)
 {
@@ -472,7 +472,46 @@ void LinkedList<D>::AddList(LinkedList* nList)
 		nList->GetNextObject();
 		LinkedNode* newNode = new LinkedNode(*(nList->cursor));
 		head = newNode;
-		cursor = head;
+		cursor = newNode;
+		length++;
+
+		while (nList->cursor->next != nullptr)
+		{
+			nList->cursor = nList->cursor->next;
+			LinkedNode* nNode = new LinkedNode(*(nList->cursor));
+			cursor->next = nNode;
+			length++;
+			cursor = nNode;
+		}
+	}
+	//when only the head is in list
+	else if (tail == nullptr)
+	{
+		nList->ResetCursor();
+		nList->GetNextObject();
+		LinkedNode* newNode = new LinkedNode(*(nList->cursor));
+		head->next = newNode;
+		cursor = newNode;
+		length++;
+
+		while (nList->cursor->next != nullptr)
+		{
+			nList->cursor = nList->cursor->next;
+			LinkedNode* nNode = new LinkedNode(*(nList->cursor));
+			cursor->next = nNode;
+			length++;
+			cursor = nNode;
+		}
+	}
+	//all other cases
+	else
+	{
+		nList->ResetCursor();
+		nList->GetNextObject();
+		LinkedNode* newNode = new LinkedNode(*(nList->cursor));
+		tail->next = newNode;
+		cursor = newNode;
+		length++;
 
 		while (nList->cursor->next != nullptr)
 		{
@@ -520,6 +559,7 @@ D LinkedList<D>::GetObject(D object, bool &bFound)
 	return cursor->nData;
 }
 
+//this doesn't account for the length of a list being 0 or 1
 template <class D>
 void LinkedList<D>::DeleteObject(D object)
 {
@@ -529,17 +569,32 @@ void LinkedList<D>::DeleteObject(D object)
 	//case for deleting object if its head
 	if (cursor->nData == object)
 	{
+		tempCursor = cursor;
 		head = cursor->next;
 	}
 	//case for deleting any other object
 	else
 	{
-		while (cursor != nullptr && !((cursor->next)->nData == object)) //continue until tempCursor reaches end of list or found the object
+		//continue until tempCursor reaches end of list or found the object
+		while (cursor != nullptr && !((cursor->next)->nData == object))
 		{
 			cursor = cursor->next;
 		}
-		tempCursor = cursor->next; //the object to be deleted
-		cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
+
+		//case for deleting tail
+		if (cursor->next == tail)
+		{
+			tempCursor = cursor->next; //the object to be deleted
+			tail = cursor;
+			tail->next = nullptr;
+		}
+		//case for deleting an element between the head and tail of a list
+		else
+		{
+			tempCursor = cursor->next; //the object to be deleted
+			cursor->next = (cursor->next)->next; //assign the next node to be the node after the one getting deleted, so the references are not lost
+		}
+		
 	}
 
 	delete tempCursor;
